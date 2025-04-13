@@ -23,7 +23,7 @@ const Advertise = () => {
     <section className="Adversisement" style={{ padding: "40px 0" }}>
       <Container fluid="lg">
         <div className={classes["ad-img"]}>
-          {/* <Row>
+          <Row>
             <Col md={5} className={classes.col}>
               <div className={classes["ad-img__item"]}>
                 <img src="https://phuclong.com.vn/uploads/dish/e3a453a57402ee-65000307trsanhnsen.png" alt="first-ad" />
@@ -31,7 +31,7 @@ const Advertise = () => {
                   <h3>American</h3>
                   <h2>Burger</h2>
                   <h6>* giao hàng nội thành TpHCM</h6>
-                  <Link to="order" className={classes.btn}>
+                  <Link to="menu" className={classes.btn}>
                     <SmallButton>Order ngay</SmallButton>
                   </Link>
                 </div>
@@ -48,7 +48,7 @@ const Advertise = () => {
                       <h3>Ưu đãi</h3>
                       <h2>Chất lượng</h2>
                       <h6>Chỉ dành cho các khách hàng thành viên</h6>
-                      <Link to="order" className={classes.btn}>
+                      <Link to="menu" className={classes.btn}>
                         <SmallButton>Order ngay</SmallButton>
                       </Link>
                     </div>
@@ -63,7 +63,7 @@ const Advertise = () => {
                       <h3>Combo</h3>
                       <h2>Hấp dẫn</h2>
                       <h6>Ghé thăm cùng nhiều combo dành cho bạn</h6>
-                      <Link to="shop" className={classes.btn}>
+                      <Link to="menu" className={classes.btn}>
                         <SmallButton>Ghé menu</SmallButton>
                       </Link>
                     </div>
@@ -78,13 +78,13 @@ const Advertise = () => {
                   <h3>Món chiên</h3>
                   <h2>Đặc biệt</h2>
                   <h6>Nước sốt đậm vị</h6>
-                  <Link to="shop" className={classes.btn}>
+                  <Link to="menu" className={classes.btn}>
                     <SmallButton>Ghé menu</SmallButton>
                   </Link>
                 </div>
               </div>
             </Col>
-          </Row> */}
+          </Row>
         </div>
         <div className={classes["ad-block"]}>
           <Row className="justify-content-center">
