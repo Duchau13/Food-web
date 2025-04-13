@@ -1,5 +1,6 @@
 import React from "react";
 import MenuItem from "../components/Menu/MenuItem";
+import Footer from "../components/UI/Footer";
 const Menu = () =>{
 
     //setup time reset token login

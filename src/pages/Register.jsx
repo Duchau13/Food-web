@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 //import { Fragment } from "react";
 import LabledInput from "../components/UI/Input/LabledInput"
 import Button from "../components/UI/Button/SmallButton"
+import Footer from '../components/UI/Footer';
 
 const validateLogin = (values) => {
     const errors = {};
@@ -90,7 +91,7 @@ const Register = () => {
       <div>
         <h1 className='display-6 mark text-center'>Đăng ký tài khoản</h1>
       </div>
-      <form onSubmit={formikRegister.handleSubmit}> 
+      <form onSubmit={formikRegister.handleSubmit} className="form-register"> 
         <LabledInput
          name="username"
          label="username"
@@ -193,8 +194,10 @@ const Register = () => {
       /> 
       <Button type="submit">Đăng Ký</Button>
      </form> 
-     </div>        
+     </div>   
+     <Footer/>     
     </div>
+    
     
     )
 };

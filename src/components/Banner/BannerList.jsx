@@ -17,40 +17,44 @@ const BannerItems = [
     id: 1,
     name: "Trà Sữa",
     link: "/menu",
-    image: "https://phuclong.com.vn/uploads/dish/e3a453a57402ee-65000307trsanhnsen.png",
+    image: "https://gongcha.com.vn/wp-content/uploads/2019/11/Okinawa-Milk-Foam-Smoothie.png",    // Ảnh trà sữa boba tươi mát, màu sắc hấp dẫn
   },
   {
     id: 2,
     name: "Cà Phê",
     link: "/menu",
-    image: "https://phuclong.com.vn/uploads/dish/8ebb07f0eeccc1-resize_damdadunggu07.png",
+    image: "https://product.hstatic.net/1000075078/product/1737356979_cf-den-nong_48501be67be14360a18567c15ed26818_large.png",
+    // Ảnh ly cà phê đen đậm đà, phong cách tối giản
   },
   {
     id: 3,
     name: "Trà Đào",
     link: "/menu",
-    image: "https://phuclong.com.vn/uploads/dish/4d247cffb2c4d5-hngtrchanh.png",
+    image: "https://gongcha.com.vn/wp-content/uploads/2018/02/%C4%90en-%C4%91%C3%A0o-2.png",
+    // Ảnh trà hoa quả (gần giống trà đào), màu cam vàng nổi bật
   },
   {
     id: 4,
     name: "Đồ Ăn",
     link: "/menu",
-    image: "https://phuclong.com.vn/uploads/dish/e8bf964785cc8f-anh_viber_20210127_153151.jpg",
+    image: "https://gongcha.com.vn/wp-content/uploads/2018/10/kem.png",
+    // Ảnh món ăn nhẹ (burger và khoai tây chiên), phù hợp menu quán
   },
   {
     id: 5,
     name: "Bánh",
     link: "/menu",
-    image: "https://demo2.pavothemes.com/poco/wp-content/uploads/2020/08/41-1.png",
+    image: "https://gongcha.com.vn/wp-content/uploads/2018/03/Kem-S%E1%BB%AFa.png",
+    // Ảnh bánh ngọt (cupcake), màu sắc bắt mắt
   },
   {
     id: 6,
-    name: "khác",
+    name: "Khác",
     link: "/menu",
-    image: "https://phuclong.com.vn/uploads/dish/61b22d5643fc80-img_67711.png",
+    image: "https://gongcha.com.vn/wp-content/uploads/2018/03/%C4%90%E1%BA%ADu-%C4%90%E1%BB%8F.png",
+    // Ảnh smoothie trái cây, đại diện cho danh mục "Khác"
   },
 ];
-
 const BannerList = () => {
   const {auth,setAuth} = useContext(AuthContext)
   console.log(auth)

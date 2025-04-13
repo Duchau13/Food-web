@@ -4,6 +4,7 @@ import ItiemCheckOut from '../CheckOut/ItiemCheckOut'
 import { Link } from "react-router-dom";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import PaymentDetail from "./PaymentDetail";
+import Footer from "../UI/Footer";
 
 const Payment = () => {
 
@@ -16,6 +17,7 @@ const Payment = () => {
                 </div>
             </div>
             <PaymentDetail/>
+            <Footer/>
         </div>
     )
 }

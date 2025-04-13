@@ -1,194 +1,122 @@
-.container{
-    margin-top: 76px;
-    margin-bottom: 200px;
-}
-.title{
+.container {
+    padding: 20px;
+    min-height: 100vh;
+    background-color: #ffffff; /* Nền trắng */
+  }
+  
+  /* List items */
+  .list__items {
+    padding: 10px;
+  }
+  
+  /* Cart item */
+  .cart-item {
     display: flex;
-    justify-content:center;
     align-items: center;
-    margin-bottom: 100px;
-    height: 250px;
-    background-image: url(https://demo2.pavothemes.com/poco/wp-content/uploads/2020/09/breadcrumb1.jpg);
-}
-.title > h1{
-    font-size:36px;
-    font-weight: 600;
-}
-
-.list__items{
-    width: 100%;
-}
-
-
-.cart-item{
-    display:flex;
-    text-align: center;
-    align-items: center;
-    margin-top: 20px;
-}
-.cart-item > div {
-    width: 20%;
-}
-.icon {
-    cursor: pointer;
-    width: 25px;
-}
-.icon:hover{
-    background-color: var(--primary);
-}
-
-.name-item{
-    font-weight:600;
-    font-size: 20px;
-}
-
-.input-quantity{
-    align-items: center;
-    text-align: center;
-}
-.input-quantity > input{
-    width: 45px;
-    height: 45px;
-}
-
-
-.price > p{
-    font-weight:600;
-    font-size: 19px;
-}
-
-.total-price > p {
-    font-weight:600;
-    font-size: 19px;
-}
-
-.info__order{
-    margin-left: 30px;
-    margin-top: 50px;
-    margin-right: 20px;
-    border: thin solid black;
-}
-.info__order-title{
-    display:flex;
-    margin-top: 10px;
-    margin-bottom: 50px;
-}
-.info__order-title{
-    justify-content: center;
-    font-size: 26px;
-    font-weight:600
-}
-
-.info__user{
-    margin-left: 10px;
-}
-
-.info__user-item, .info__user-pay, .info__user-deliveryfee{
-    display:flex;
-}
-.info__user-item, .info__user-pay, .info__user-deliveryfee > h1{
-    margin-bottom: 20px;
-    font-size: 20px;
-}
-.info__user-item, .info__user-pay, .info__user-deliveryfee > p{
-    margin-bottom: 20px;
-    margin-left: 5px;
-    font-size: 20px;
-    font-weight:600;
-    margin-top: 3px;
-}
-.info__user-pay > p{
-    color: var(--green);
-    margin-top: 3px;
-}
-.info__user-deliveryfee > p{
-    color: var(--primary)
-}
-.info__user-deliveryfee > h1{
-    margin-left: 8px;
-}
-.info__user-item > p{
-    margin-top:3px ;
-}
-
-
-
-.text-confirm{
-    font-size:18px;
-    color: var(--green);
+    gap: 15px;
+    background-color: #f8f9fa; /* Xám nhạt, nổi trên nền trắng */
+    transition: all 0.3s ease;
+  }
+  
+  .cart-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .image-item img {
+    object-fit: cover;
+    border: 1px solid #dee2e6; /* Viền xám nhạt cho ảnh */
+  }
+  
+  .name-item {
+    flex: 2;
+    font-size: 1.1rem;
     font-weight: 500;
-    margin-bottom: 10px;
-}
-.text-cancel{
-    font-size:18px;
-    color: var(--red);
-    font-weight: 500;
-}
-.text-wait{
-    font-size:18px;
-    color: var(--primary);
-    font-weight: 600;
-    margin-top: 10px;
-}
-.cancle-button{
-    margin-top: 20px;
-    height: 40px;
-    background-color: var(--red);
-    color:#fff;
-    border-radius: 2px;
-    border-color: var(--red);
-    font-size: 16px;
-}
+    color: #212529; /* Chữ đen đậm */
+  }
+  
+  .price,
+  .input-quantity,
+  .total-price {
+    flex: 1;
+    font-size: 1rem;
+    text-align: center;
+    color: #212529;
+  }
+  
+  /* Payment method */
+  .payment__method {
+    background-color: #f8f9fa; /* Xám nhạt, đồng bộ với cart-item */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .set__payment {
+    border-color: #ced4da; /* Viền xám nhạt */
+    transition: all 0.3s ease;
+  }
+  
+  .set__payment:hover,
+  .set__payment:focus {
+    border-color: #6c757d; /* Xám đậm khi hover/focus */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .payment__method textarea {
+    resize: none;
+    border-color: #ced4da;
+  }
+  
+  .payment__method textarea:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Discount input */
+  .discount input {
+    border-color: #ced4da;
+  }
+  
+  .discount input:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Checkout button */
+  .Check__out button {
+    font-weight: bold;
+    transition: all 0.3s ease;
+    background-color: #ffc222;
+  }
+  
+  .Check__out button:hover {
+    background-color: #ffc222;
+    transform: scale(1.05);
+  }
+  
+  @media (max-width: 768px) {
+    .cart-item {
+      flex-direction: column;
+      text-align: center;
+      gap: 10px;
+    }
+  
+    .image-item img {
+      margin: 0 auto;
+    }
+  
+    .name-item,
+    .price,
+    .input-quantity,
+    .total-price {
+      flex: none;
+    }
+  
+    .payment__method {
+      padding: 15px;
+    }
+  
+    .Check__out button {
+      width: 100%;
 
-.set__payment{
-    margin-bottom:60px;
-    margin-top: 20px;
-    width: 300px;
-}
-.payment__method{
-    display: block;
-    margin-top: 50px;
-    margin-left: 70px;
-}
-.payment__method > p {
-    font-size: 20px;
-    font-weight: 600;
-}
-.payment__method > textarea{
-    margin-top: 20px;
-    margin-bottom: 30px;
-}
-.payment__method > textarea:focus{
-    border-color: var(--primary);
-}
-.map__box{
-    margin-left: 50px;
-    display: block;
-}
-
-.Check__out > button{
-    width: 500px;
-    height: 50px;
-    background-color: var(--primary);
-    border-color: var(--primary);
-    color: #000;
-    /* margin-top: 150px;
-    margin-left: 600px; */
-    margin-left: 600px;
-}
-.Check__out > button:hover{
-    background-color: var(--primary-dark)
-}
-.Check__out{
-    margin-top: 100px;
-}
-
-.discount{
-    width:300px;
-    font-weight: 600;
-    font-size: 20px;
-    color:#000;
-}
-.discount > label {
-    font-weight: 600;
-}
+    }
+  }

@@ -93,11 +93,10 @@ const ItiemCheckOut = () => {
     useEffect(() => {
         getPayment().then((res) => {
             setPaysmethod(res.data.paymentList)
-            console.log(1)
         })
         getShipping_partners().then((res) => {
-            setShippings(res.data.shipping_partnerList)
-            console.log(1)
+            setShippings(res.data.itemList)
+            
         })
     },[])
     
@@ -241,6 +240,8 @@ const ItiemCheckOut = () => {
             });
         });
     }
+    console.log();
+    
     
     return (
         <div className="container">
@@ -302,9 +303,9 @@ const ItiemCheckOut = () => {
                 )})}   
             </select>
             </div>
-            <div className={classes["box__map"]}>
+            {/* <div className={classes["box__map"]}>
                 <Mapbox/>
-            </div>
+            </div> 
             </div> */}
             <div className={classes["Check__out"]}>
                 <button

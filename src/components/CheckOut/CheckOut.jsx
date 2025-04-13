@@ -3,6 +3,7 @@ import classes from './CheckOut.module.css'
 import { Link } from "react-router-dom";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ItiemCheckOut from "./ItiemCheckOut";
+import Footer from "../UI/Footer";
 
 const CheckOut = () => {
     return (
@@ -14,6 +15,7 @@ const CheckOut = () => {
                 </div>
             </div>
             <ItiemCheckOut/>
+            <Footer/>
         </div>
     )
 }

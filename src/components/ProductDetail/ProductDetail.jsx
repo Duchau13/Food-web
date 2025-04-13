@@ -35,7 +35,9 @@ const ProductDetail = () => {
           return res
         }
         getData().then((res) => {
-          setItems(res.data.item[0])
+          setItems(res.data.item)
+          console.log(res);
+          
         })
         getData().catch((err) => {
           console.log(err)
@@ -101,7 +103,9 @@ const ProductDetail = () => {
             console.log(res)
         });
     }
-    console.log(items)
+    
+    
+    
     const toggleTab = (index) => {
             setValue(index);
     }
