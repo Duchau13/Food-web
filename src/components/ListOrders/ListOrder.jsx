@@ -1,97 +1,175 @@
-import React from "react";
-import {useState,useEffect} from 'react'
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import api from "../../apiRequest/axios";
+import classes from "./ListOrders.module.css";
 
-import api from '../../apiRequest/axios';
-import classes from './ListOrders.module.css'
+const ListOrders = () => {
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+  const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-const ListOders = () => {
-    const token = localStorage.getItem('token')
-    const navigate = useNavigate();
+  // Format giá tiền
+  const formatPrice = (price) => {
+    return price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : "0";
+  };
 
-    const [orders,setOrders] = useState([])
+  // Lấy danh sách đơn hàng
+  const getOrders = async () => {
+    const res = await api.get("/orders", {
+      headers: {
+        access_token: token,
+      },
+    });
+    return res;
+  };
 
-    const getOrders = async() => {
-        const res = await api.get("/orders",{
-            headers: {
-                access_token: token
-            }
-        })
-        return res
+  // Kiểm tra đăng nhập và lấy đơn hàng
+  useEffect(() => {
+    if (!token) {
+      toast.error("Bạn cần đăng nhập để xem đơn hàng", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+      return;
     }
-    useEffect(() => {
-      
-        getOrders().then((res) => {
-          setOrders(res.data.orderList)
-          console.log(res)
-        })
-        getOrders().catch((err) => {
-          console.log(err)
-        })
-    },[])
 
-    //console.log(orders)
-    function Status(e) {
-        const order = e.value
-        //console.log(order)
-        if(order==0){
-            return(    
-                <p className={classes['text-wait']} >Chưa xác nhận</p>   
-            )
-        }
-        if(order==3){
-            return(    
-                <p className={classes['text-unconfirm']} >Đang giao</p>   
-            )
-        }
-        if(order==4){
-            return(    
-                <p className={classes['text-confirm']} >Hoàn thành</p>   
-            )
-        }
-        if(order==2){
-            return ( 
-                <p className={classes['text-cancel']} >Đã Huỷ </p>
-        )}
-        else{
-            return (
-                <p className={classes['text-unconfirm']} >Đã xác nhận </p>
-        )}
+    getOrders()
+      .then((res) => {
+        setOrders(res.data.orderList || []);
+        console.log(orders);
+        
+      })
+      .catch((err) => {
+        console.error("Lỗi khi lấy danh sách đơn hàng:", err);
+        toast.error("Không thể tải danh sách đơn hàng", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      });
+  }, [token, navigate]);
+
+  // Hủy đơn hàng (đồng bộ với OrderDetail.js)
+  const hanleCancelOrder = (id_order) => {
+      try {
+        api.get(`/orders/cancel/${id_order}`, {
+          headers: {
+            access_token: token
+          }
+        })
+        toast.success('Đã Huỷ Đơn Hàng', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTimeout(() => {
+          navigate('/orders')
+        }, 2000);
+      } catch (error) {
+        console.log(error);
+      }
     }
+
+  // Hiển thị trạng thái đơn hàng
+  const Status = ({ value }) => {
+    const statusMap = {
+      0: { text: "Chưa xác nhận", className: classes["text-wait"], animate: true },
+      1: { text: "Đã xác nhận", className: classes["text-unconfirm"] },
+      2: { text: "Đã hủy", className: classes["text-cancel"] },
+      3: { text: "Đang giao", className: classes["text-unconfirm"] },
+      4: { text: "Hoàn thành", className: classes["text-confirm"] },
+    };
+
+    const status = statusMap[value] || statusMap[1];
     return (
-        <div className={classes["container"]}>
-            <div className={classes["title"]}>
-                <h1>Danh Sách Hoá Đơn</h1>
-            </div>
-            {orders.map((order) =>{
-            return(
-            <div className={classes["container__orders"]}>
-            <div className={classes["cart-item"]} key={order.id_order}>
-                
+      <p className={`${status.className} ${status.animate ? classes["pulse"] : ""}`}>
+        {status.text}
+      </p>
+    );
+  };
 
+  return (
+    <div className={classes["main-container"]}>
+      <div className={classes["title"]}>
+        <h1>Danh Sách Hoá Đơn</h1>
+      </div>
+      <div className="container">
+        <div className={classes["container__orders"]}>
+          {isLoading && <div className={classes["loading"]}>Đang xử lý...</div>}
+          {orders.length === 0 ? (
+            <p className={classes["no-orders"]}>Bạn chưa có đơn hàng nào.</p>
+          ) : (
+            orders.map((order) => (
+              <div className={classes["cart-item"]} key={order.id_order}>
                 <div className={classes["name-item"]}>
-                    <p onClick={() => navigate(`/orders/${order.id_order}`)}> 
-                        Đơn hàng ngày: {order.time_order}
-                    </p>
+                  <p
+                    onClick={() => navigate(`/orders/${order.id_order}`)}
+                    title={`Xem chi tiết đơn hàng #${order.id_order}`}
+                  >
+                    Đơn hàng ngày: {order.time_order}
+                  </p>
                 </div>
                 <div className={classes["price"]}>
-                    <p>Đơn Giá : {order.item_fee}</p>
-                </div>
-                <div className={classes["price"]}>
-                    <p>Phí ship : {order.delivery_fee}</p>
+                  <p>Đơn Giá: {formatPrice(order.item_fee)} VNĐ</p>
                 </div>
                 <div className={classes["total-price"]}>
-                    <p>Tổng Giá : {order.total}</p>
+                  <p>Tổng Giá: {formatPrice(order.item_fee)} VNĐ</p>
                 </div>
-                <div className={classes["total-price"]}>
-                    <Status value={order.status}/>
+                <div className={classes["status"]}>
+                  <Status value={order.status} />
                 </div>
-            </div>
-            <hr></hr>
-            </div>
-            )})}
+                {(order.status === 0 || order.status === 1) && (
+                  <div className={classes["action"]}>
+                    <button
+                      className={classes["button-cancel"]}
+                      onClick={() => hanleCancelOrder(order.id_order)}
+                      disabled={isLoading}
+                    >
+                      Hủy đơn
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))
+          )}
         </div>
-    )
-}
+      </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </div>
+  );
+};
 
-export default ListOders
+export default ListOrders;

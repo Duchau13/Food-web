@@ -85,36 +85,55 @@ const ListItem = () => {
 
   // Xử lý thêm vào giỏ hàng
   const handleAddToCart = async (id_item) => {
-    api
-      .post(`cart/add/${id_item}`, quantity, {
-        headers: {
-          access_token: token,
-        },
-      })
-      .then((res) => {
-        toast.success("Thêm hàng thành công", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      })
-      .catch((res) => {
-        toast.error("Thêm hàng thất bại", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+    // Kiểm tra token trong localStorage
+    if (!token) {
+      toast.error("Bạn cần đăng nhập để thêm vào giỏ hàng", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
+      // Tùy chọn: Chuyển hướng đến trang đăng nhập // Chuyển hướng sau 2 giây để người dùng đọc toast
+      return;
+    }
+
+    // Nếu đã đăng nhập, gửi yêu cầu thêm vào giỏ hàng
+    try {
+      const res = await api.post(
+        `/cart/add/${id_item}`,
+        quantity,
+        {
+          headers: {
+            access_token: token,
+          },
+        }
+      );
+      toast.success("Thêm hàng thành công", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (err) {
+      toast.error("Thêm hàng thất bại", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   // Tạo danh sách số trang

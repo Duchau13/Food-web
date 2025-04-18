@@ -1,202 +1,274 @@
-.title{
-    display: flex;
-    justify-content:center;
-    align-items: center;
-    margin-bottom: 100px;
-    height: 250px;
-    background-image: url(https://demo2.pavothemes.com/poco/wp-content/uploads/2020/09/breadcrumb1.jpg);
+.main-container {
+  background-color: #ffffff;
+  min-height: 100vh;
+  padding-top: 76px;
+  display: flex;
+  flex-direction: column;
 }
-.container {
-    min-height: 100vh;
-    background-color: #ffffff; /* Nền trắng */
+
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 250px;
+  background-image: url(https://demo2.pavothemes.com/poco/wp-content/uploads/2020/09/breadcrumb1.jpg);
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 50px;
+}
+
+.title h1 {
+  font-size: 36px;
+  font-weight: 550;
+  color: #000;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.list__items {
+  padding: 20px 0;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  /* Title */
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 15px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.cart-item:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.image-item img {
+  object-fit: cover;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.image-item img:hover {
+  transform: scale(1.05);
+}
+
+.name-item {
+  flex: 2;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.name-item p {
+  margin: 0;
+}
+
+.price,
+.input-quantity,
+.total-price {
+  flex: 1;
+  font-size: 16px;
+  text-align: center;
+  color: #1a202c;
+}
+
+.price p,
+.input-quantity p,
+.total-price p {
+  margin: 0;
+}
+
+.highlight-price {
+  color: #31b0d5;
+  font-weight: 600;
+}
+
+.info__order {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.info__order-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a202c;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.info__user {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.info__user-item,
+.info__user-pay {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: #1a202c;
+}
+
+.info__user-item span:first-child,
+.info__user-pay span:first-child {
+  font-weight: 600;
+}
+
+.info__user-item span:last-child,
+.info__user-pay span:last-child {
+  color: #4a5568;
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.status p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.status-action {
+  margin-top: 10px;
+}
+
+.text-wait {
+  color: #5bc0de;
+}
+
+.text-confirm {
+  color: #28a745;
+}
+
+.text-cancel {
+  color: #dc3545;
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.cancel-button {
+  width: 120px;
+  height: 35px;
+  background-color: #dc3545;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.3s ease;
+}
+
+.cancel-button:hover {
+  background-color: #c82333;
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+  transform: scale(1.05);
+}
+
+.cancel-button:active {
+  transform: scale(0.98);
+}
+
+.no-items {
+  text-align: center;
+  font-size: 18px;
+  color: #6b7280;
+  margin: 50px 0;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+  color: #6b7280;
+  margin: 50px 0;
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    padding-top: 60px;
+  }
+
   .title {
-    text-align: center;
-    margin-bottom: 30px;
+    height: 200px;
   }
-  
+
   .title h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #212529; /* Chữ đen đậm */
+    font-size: 28px;
   }
-  
-  /* List items */
-  .list__items {
+
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
     padding: 10px;
   }
-  
-  /* Cart item */
-  .cart-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background-color: #f8f9fa; /* Xám nhạt, nổi trên nền trắng */
-    transition: all 0.3s ease;
-  }
-  
-  .cart-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
+
   .image-item img {
-    object-fit: cover;
-    border: 1px solid #dee2e6; /* Viền xám nhạt */
-    transition: transform 0.3s ease;
+    margin: 0 auto;
   }
-  
-  .image-item img:hover {
-    transform: scale(1.05);
-  }
-  
-  .name-item {
-    flex: 2;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #212529;
-  }
-  
+
+  .name-item,
   .price,
   .input-quantity,
   .total-price {
-    flex: 1;
-    font-size: 1rem;
-    text-align: center;
-    color: #212529;
+    flex: none;
+    text-align: left;
+    width: 100%;
   }
-  
-  .price p,
-  .input-quantity p,
-  .total-price p {
-    margin: 0;
-  }
-  
-  /* Highlight price */
-  .highlight-price {
-    color: #007bff; /* Xanh dương để nổi bật */
-    font-weight: 600;
-    background-color: #e6f3fa; /* Nền xanh nhạt nhẹ */
-    padding: 2px 6px;
-    border-radius: 4px;
-  }
-  
-  /* Info order */
+
   .info__order {
-    background-color: #f8f9fa; /* Xám nhạt, đồng bộ với cart-item */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-top: 20px;
   }
-  
-  .info__order-title {
-    font-size: 1.5rem;
-    color: #212529;
-    border-bottom: 1px solid #dee2e6;
-    padding-bottom: 10px;
-  }
-  
-  .info__user {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  
+
   .info__user-item,
-  .info__user-pay,
-  .info__user-deliveryfee {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1rem;
-    color: #212529;
-  }
-  
-  .info__user-item span:first-child,
-  .info__user-pay span:first-child,
-  .info__user-deliveryfee span:first-child {
-    font-weight: 600;
-  }
-  
-  .info__user-item span:last-child,
-  .info__user-pay span:last-child,
-  .info__user-deliveryfee span:last-child {
-    color: #495057;
-  }
-  
-  /* Status */
-  .status-wait {
-    display: flex;
+  .info__user-pay {
     flex-direction: column;
+    align-items: flex-start;
     gap: 5px;
-    align-items: flex-end;
   }
-  
-  .text-wait {
-    color: #ffc107; /* Vàng cho trạng thái chờ */
-    font-weight: 500;
-    margin: 0;
+
+  .status {
+    align-items: flex-start;
   }
-  
-  .text-confirm {
-    color: #28a745; /* Xanh lá cho xác nhận */
-    font-weight: 500;
-    margin: 0;
-  }
-  
-  .text-cancel {
-    color: #dc3545; /* Đỏ cho hủy */
-    font-weight: 500;
-    margin: 0;
-  }
-  
-  .cancle-button {
-    font-size: 0.9rem;
-    padding: 5px 15px;
-    transition: all 0.3s ease;
-  }
-  
-  .cancle-button:hover {
-    background-color: #c82333;
-    transform: scale(1.05);
-  }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .cart-item {
-      flex-direction: column;
-      text-align: center;
-      gap: 10px;
-    }
-  
-    .image-item img {
-      margin: 0 auto;
-    }
-  
-    .name-item,
-    .price,
-    .input-quantity,
-    .total-price {
-      flex: none;
-    }
-  
-    .info__order {
-      padding: 15px;
-    }
-  
-    .info__user-item,
-    .info__user-pay,
-    .info__user-deliveryfee {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 5px;
-    }
-  
-    .status-wait {
-      align-items: center;
-    }
-  
-    .highlight-price {
-      padding: 2px 4px;
-    }
-  }
+}

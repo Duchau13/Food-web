@@ -1,45 +1,80 @@
-import React from "react";
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify"
-import 'react-toastify/dist/ReactToastify.css';
-
-import api from '../../apiRequest/axios';
-import classes from './OderDetail.module.css'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import api from "../../apiRequest/axios";
+import classes from "./OderDetail.module.css";
 import Footer from "../UI/Footer";
 
 const OrderDetail = () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const { id_order } = useParams();
+  const navigate = useNavigate();
+  const [items, setItems] = useState([]);
+  const [infoOrder, setInfoOrder] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
-  const navigate = useNavigate()
-  const [items, setItems] = useState([])
-  const [infoOder, setInfoOder] = useState({})
-
-  // Hàm format tiền thêm dấu chấm
+  // Hàm format tiền
   const formatPrice = (price) => {
-    return price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '0';
+    return price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : "0";
   };
 
+  // Hàm format ngày giờ
+
+  // Lấy chi tiết đơn hàng
   const getOrdersDetail = async () => {
     const res = await api.get(`/orders/detail/${id_order}`, {
       headers: {
-        access_token: token
-      }
-    })
-    return res
-  }
-  useEffect(() => {
-    getOrdersDetail().then((res) => {
-      setItems(res.data.itemList)
-      setInfoOder(res.data.info)
-      console.log(res)
-    })
-    getOrdersDetail().catch((err) => {
-      console.log(err)
-    })
-  }, [])
+        access_token: token,
+      },
+    });
+    return res;
+  };
 
+  // Kiểm tra đăng nhập và lấy chi tiết đơn hàng
+  useEffect(() => {
+    if (!token) {
+      toast.error("Bạn cần đăng nhập để xem chi tiết đơn hàng", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+      return;
+    }
+
+    setIsLoading(true);
+    getOrdersDetail()
+      .then((res) => {
+        setItems(res.data.itemList || []);
+        setInfoOrder(res.data.info || {});
+      })
+      .catch((err) => {
+        console.error("Lỗi khi lấy chi tiết đơn hàng:", err);
+        toast.error("Không thể tải chi tiết đơn hàng", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [token, id_order, navigate]);
+
+  // Hủy đơn hàng
   const hanleCancelOrder = () => {
     try {
       api.get(`/orders/cancel/${id_order}`, {
@@ -65,142 +100,163 @@ const OrderDetail = () => {
     }
   }
 
-  function Status(e) {
-    const order = e.value
-    if (order == 0) {
-      return (
-        <div className={classes["status-wait"]}>
-          <p className={classes['text-wait']}>Chưa xác nhận</p>
+  // Hiển thị trạng thái đơn hàng
+  const Status = ({ value }) => {
+    const statusMap = {
+      0: {
+        text: "Chưa xác nhận",
+        className: classes["text-wait"],
+        animate: true,
+        action: (
           <button
-            className={`${classes['cancle-button']} btn btn-danger btn-sm`}
+            className={classes["cancel-button"]}
             onClick={hanleCancelOrder}
           >
-            Huỷ đơn hàng
+            Hủy đơn hàng
           </button>
-        </div>
-      )
-    }
-    if (order === 1) {
-      return <div><p className={classes['text-confirm']}>Đã xác nhận</p>
-        <p className={classes['text-wait']}>Chờ vận chuyển</p>
+        ),
+      },
+      1: {
+        text: ["Đã xác nhận", "Chờ vận chuyển"],
+        className: classes["text-confirm"],
+      },
+      3: {
+        text: ["Đã xác nhận", "Đang giao hàng"],
+        className: classes["text-confirm"],
+      },
+      4: {
+        text: ["Đã xác nhận", "Hoàn thành"],
+        className: classes["text-confirm"],
+      },
+      2: { text: "Đã hủy", className: classes["text-cancel"] },
+    };
+
+    const status = statusMap[value] || statusMap[2];
+    return (
+      <div className={classes["status"]}>
+        {Array.isArray(status.text) ? (
+          status.text.map((text, index) => (
+            <p
+              key={index}
+              className={`${status.className} ${status.animate && index === 0 ? classes["pulse"] : ""}`}
+            >
+              {text}
+            </p>
+          ))
+        ) : (
+          <p className={`${status.className} ${status.animate ? classes["pulse"] : ""}`}>
+            {status.text}
+          </p>
+        )}
+        {status.action && <div className={classes["status-action"]}>{status.action}</div>}
       </div>
-    }
-    if (order === 3) {
-      return <div><p className={classes['text-confirm']}>Đã xác nhận</p>
-        <p className={classes['text-wait']}>Đang giao hàng</p>
-      </div>
-    }
-    if (order === 4) {
-      return <div><p className={classes['text-confirm']}>Đã xác nhận</p>
-        <p className={classes['text-confirm']}>Đơn hàng hoàn thành</p>
-      </div>
-    }
-    else {
-      return <p className={classes['text-cancel']}>Đã huỷ</p>
-    }
-  }
+    );
+  };
 
   return (
-    <div className={`${classes.container} bg-white`}>
+    <div className={classes["main-container"]}>
       <div className={classes["title"]}>
         <h1>Chi Tiết Hoá Đơn</h1>
       </div>
-      <div className="row">
-        <div className="col-12 col-md-8">
-          <div className={classes["list__items"]}>
-            {items.map((item) => (
-              <div key={item.id_item}>
-                <div className={`${classes["cart-item"]} bg-light border border-secondary rounded p-3 mb-3`}>
-                  <div className={classes["image-item"]}>
-                    <img
-                      src={item.image}
-                      alt="food image"
-                      width="90px"
-                      height="90px"
-                      className="rounded"
-                    />
+      <div className="container">
+        {isLoading ? (
+          <div className={classes["loading"]}>Đang tải...</div>
+        ) : (
+          <div className="row">
+            <div className="col-12 col-md-8">
+              <div className={classes["list__items"]}>
+                {items.length === 0 ? (
+                  <p className={classes["no-items"]}>Không có sản phẩm nào trong đơn hàng.</p>
+                ) : (
+                  items.map((item) => (
+                    <div key={item.id_item} className={classes["cart-item"]}>
+                      <div className={classes["image-item"]}>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          width="90px"
+                          height="90px"
+                          className="rounded"
+                        />
+                      </div>
+                      <div className={classes["name-item"]}>
+                        <p>{item.name}</p>
+                      </div>
+                      <div className={classes["price"]}>
+                        <p>
+                          Đơn Giá: <span className={classes["highlight-price"]}>{formatPrice(item.price)}đ</span>
+                        </p>
+                      </div>
+                      <div className={classes["input-quantity"]}>
+                        <p>Số lượng: {item.quantity}</p>
+                      </div>
+                      <div className={classes["total-price"]}>
+                        <p>
+                          Tổng Giá: <span className={classes["highlight-price"]}>{formatPrice(item.price * item.quantity)}đ</span>
+                        </p>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+            <div className="col-12 col-md-4">
+              <div className={classes["info__order"]}>
+                <div className={classes["info__order-title"]}>Thông tin thanh toán</div>
+                <div className={classes["info__user"]}>
+                  <div className={classes["info__user-item"]}>
+                    <span>Tên người dùng:</span>
+                    <span>{infoOrder.name_customer || "N/A"}</span>
                   </div>
-                  <div className={classes["name-item"]}>
-                    <p className="mb-0">{item.name}</p>
+                  <div className={classes["info__user-item"]}>
+                    <span>Số điện thoại:</span>
+                    <span>{infoOrder.phone || "N/A"}</span>
                   </div>
-                  <div className={classes["price"]}>
-                    <p className="mb-0">
-                      Đơn Giá: <span className={classes["highlight-price"]}>{formatPrice(item.price)}đ</span>
-                    </p>
+                  <div className={classes["info__user-item"]}>
+                    <span>Phương thức thanh toán:</span>
+                    <span>{infoOrder.name_payment || "N/A"}</span>
                   </div>
-                  <div className={classes["input-quantity"]}>
-                    <p className="mb-0">Số lượng: {item.quantity}</p>
+                  <div className={classes["info__user-item"]}>
+                    <span>Đơn vị vận chuyển:</span>
+                    <span>{infoOrder.name_shipping_partner || "N/A"}</span>
                   </div>
-                  <div className={classes["total-price"]}>
-                    <p className="mb-0">
-                      Tổng Giá: <span className={classes["highlight-price"]}>{formatPrice(item.price * item.quantity)}đ</span>
-                    </p>
+                  <div className={classes["info__user-item"]}>
+                    <span>Ghi chú:</span>
+                    <span>{infoOrder.description || "Không có"}</span>
+                  </div>
+                  <div className={classes["info__user-item"]}>
+                    <span>Ngày đặt hàng:</span>
+                    <span>{infoOrder.time_order}</span>
+                  </div>
+                  <div className={classes["info__user-pay"]}>
+                    <span>Tiền hoá đơn:</span>
+                    <span className={classes["highlight-price"]}>{formatPrice(infoOrder.item_fee)}đ</span>
+                  </div>
+                  <div className={classes["info__user-pay"]}>
+                    <span>Trạng thái đơn hàng:</span>
+                    <Status value={infoOrder.status} />
                   </div>
                 </div>
-                <hr className="border-secondary" />
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="col-12 col-md-4">
-          <div className={`${classes["info__order"]} bg-light border border-secondary rounded p-4`}>
-            <div className={`${classes["info__order-title"]} fw-bold mb-3`}>Thông tin thanh toán</div>
-            <div className={classes["info__user"]}>
-              <div className={classes["info__user-item"]}>
-                <span className="fw-bold">Tên người dùng:</span>
-                <span>{infoOder.name_customer}</span>
-              </div>
-              <div className={classes["info__user-item"]}>
-                <span className="fw-bold">Số điện thoại:</span>
-                <span>{infoOder.phone}</span>
-              </div>
-              <div className={classes["info__user-item"]}>
-                <span className="fw-bold">Phương thức thanh toán:</span>
-                <span>{infoOder.name_payment}</span>
-              </div>
-              <div className={classes["info__user-item"]}>
-                <span className="fw-bold">Đơn vị vận chuyển:</span>
-                <span>{infoOder.name_shipping_partner}</span>
-              </div>
-              <div className={classes["info__user-item"]}>
-                <span className="fw-bold">Ghi chú:</span>
-                <span>{infoOder.description || "Không có"}</span>
-              </div>
-              <div className={classes["info__user-pay"]}>
-                <span className="fw-bold">Tiền hoá đơn:</span>
-                <span className={classes["highlight-price"]}>{formatPrice(infoOder.item_fee)}đ</span>
-              </div>
-              {/* <div className={classes["info__user-deliveryfee"]}>
-                <span className="fw-bold">Phí vận chuyển:</span>
-                <span className={classes["highlight-price"]}>{formatPrice(infoOder.delivery_fee)}đ</span>
-              </div>
-              <div className={classes["info__user-deliveryfee"]}>
-                <span className="fw-bold">Tổng hoá đơn:</span>
-                <span className={classes["highlight-price"]}>{formatPrice(infoOder.total)}đ</span>
-              </div> */}
-              <div className={classes["info__user-deliveryfee"]}>
-                <span className="fw-bold">Trạng thái đơn hàng:</span>
-                <Status value={infoOder.status} />
               </div>
             </div>
           </div>
-          <ToastContainer
-            position="top-right"
-            autoClose={2000}
-            hideProgressBar
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-        </div>
+        )}
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default OrderDetail
+export default OrderDetail;
